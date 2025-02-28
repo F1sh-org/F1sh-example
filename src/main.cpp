@@ -48,6 +48,7 @@ void initStatic() {
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->redirect("/index.html");
   });
+  server.rewrite("*", "/index.html");
   server.serveStatic("/index.html", LittleFS, "/index.html");
   server.begin();
 }
