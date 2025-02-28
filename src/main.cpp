@@ -24,6 +24,8 @@ const char *password = "stemistclub";
 
 const char *hostname = "f1sh.local";
 
+const int channel = 0; // 1-13 - You should change this if there are multiple APs in the area.
+
 static AsyncWebServer server(80);
 
 void initWiFi() {
@@ -33,13 +35,26 @@ void initWiFi() {
   Serial.print("\n\nCreating hotspot");
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-  WiFi.softAP(ssid,password);
+  WiFi.softAP(ssid,password,(channel >= 1) && (channel <= 13) ? channel : int(random(1, 13)));
   dnsServer.start(DNS_PORT, "*", apIP);
   Serial.println("\n\nWiFi parameters:");
   Serial.print("Mode: ");
   Serial.println(WiFi.getMode() == WIFI_AP ? "Station" : "Client");
   Serial.print("IP address: ");
   Serial.println(WiFi.getMode() == WIFI_AP ? WiFi.softAPIP() : WiFi.localIP());
+}
+
+void initStatic() {
+  {
+    File f = LittleFS.open("/www/index.html", "r");
+    assert(f);
+    f.close();
+  }
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->redirect("/index.html");
+  });
+  server.serveStatic("/index.html", LittleFS, "/index.html");
+  server.begin();
 }
 void setup() {
   // put your setup code here, to run once:
