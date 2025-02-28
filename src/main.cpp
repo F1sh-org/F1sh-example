@@ -45,11 +45,6 @@ void initWiFi() {
 }
 
 void initStatic() {
-  {
-    File f = LittleFS.open("/www/index.html", "r");
-    assert(f);
-    f.close();
-  }
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->redirect("/index.html");
   });
