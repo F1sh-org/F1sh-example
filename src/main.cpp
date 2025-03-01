@@ -13,6 +13,7 @@
 
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
+#include <ElegantOTA.h>
 
 // configure softAP and DNS.
 const byte DNS_PORT = 53;
@@ -119,9 +120,12 @@ void setup() {
   LittleFS.begin();
 #endif
   initWiFiAP();
+  ElegantOTA.begin(&server);
+  initStatic();
 }
 
 void loop() {
   dnsServer.processNextRequest();
+  ElegantOTA.loop();
   wsCleanup();
 }
