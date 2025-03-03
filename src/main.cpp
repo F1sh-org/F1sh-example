@@ -2,7 +2,6 @@
 #ifdef ESP32
 #include <AsyncTCP.h>
 #include <WiFi.h>
-#include <DNSServer.h>
 #elif defined(ESP8266)
 #include <ESP8266WiFi.h>
 #include <ESPAsyncTCP.h>
@@ -13,12 +12,6 @@
 
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
-#include <ElegantOTA.h>
-
-// configure softAP and DNS.
-const byte DNS_PORT = 53;
-IPAddress apIP(192, 168, 4, 1);
-DNSServer dnsServer;
 
 const char *ssid = "F1sh";
 const char *password = "stemistclub";
@@ -30,20 +23,13 @@ const int channel = 0; // 1-13 - You should change this if there are multiple AP
 static AsyncWebServer server(80);
 static AsyncWebSocket ws("/ws");
 
-static uint32_t lastWS = 0;
-static uint32_t deltaWS = 100;
-
-static uint32_t lastHeap = 0;
-
 void initWiFiAP() {
   WiFi.setHostname(hostname);
   WiFi.encryptionType(WIFI_AUTH_WPA2_PSK);
   WiFi.begin(ssid, password);
   Serial.print("\n\nCreating hotspot");
   WiFi.mode(WIFI_AP);
-  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
   WiFi.softAP(ssid,password,(channel >= 1) && (channel <= 13) ? channel : int(random(1, 13)));
-  dnsServer.start(DNS_PORT, "*", apIP);
   Serial.println("\n\nWiFi parameters:");
   Serial.print("Mode: ");
   Serial.println(WiFi.getMode() == WIFI_AP ? "Station" : "Client");
@@ -51,13 +37,7 @@ void initWiFiAP() {
   Serial.println(WiFi.getMode() == WIFI_AP ? WiFi.softAPIP() : WiFi.localIP());
 }
 
-void initStatic() {
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->redirect("/index.html");
-  });
-  server.rewrite("*", "/index.html");
-  server.serveStatic("/index.html", LittleFS, "/index.html");
-  server.addHandler(&ws);
+void initWebServer() {
   ws.onEvent([](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
     (void)len;
 
@@ -89,26 +69,10 @@ void initStatic() {
       }
     }
   });
+  server.rewrite("/config", "/index.html");
+  server.serveStatic("/controller", LittleFS, "/").setDefaultFile("index.html");
+  server.addHandler(&ws);
   server.begin();
-}
-
-void wsCleanup() {
-  uint32_t now = millis();
-
-  if (now - lastWS >= deltaWS) {
-    ws.printfAll("kp%.4f", (10.0 / 3.0));
-    lastWS = millis();
-  }
-
-  if (now - lastHeap >= 2000) {
-    // cleanup disconnected clients or too many clients
-    ws.cleanupClients();
-
-#ifdef ESP32
-    Serial.printf("Free heap: %" PRIu32 "\n", ESP.getFreeHeap());
-#endif
-    lastHeap = now;
-  }
 }
 
 void setup() {
@@ -120,12 +84,9 @@ void setup() {
   LittleFS.begin();
 #endif
   initWiFiAP();
-  ElegantOTA.begin(&server);
-  initStatic();
+  initWebServer();
 }
 
 void loop() {
-  dnsServer.processNextRequest();
-  ElegantOTA.loop();
-  wsCleanup();
+  ws.cleanupClients();
 }
