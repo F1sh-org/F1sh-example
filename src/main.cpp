@@ -12,6 +12,9 @@
 
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
+#include "AsyncJson.h"
+#include <ArduinoJson.h>
+#include <motor.h>
 
 const char *ssid = "F1sh";
 const char *password = "stemistclub";
@@ -65,6 +68,24 @@ void initWebServer() {
         if (info->opcode == WS_TEXT) {
           data[len] = 0;
           Serial.printf("ws text: %s\n", (char *)data);
+
+          // Parse the JSON message
+          StaticJsonDocument<512> doc;
+          DeserializationError error = deserializeJson(doc, data);
+          if (error) {
+            Serial.print(F("deserializeJson() failed: "));
+            Serial.println(error.f_str());
+            return;
+          }
+
+          // Extract motor data
+          const char* c1 = doc["c1"];
+          const char* c2 = doc["c2"];
+          const char* c3 = doc["c3"];
+          const char* c4 = doc["c4"];
+
+          Serial.printf("c1: %s  c2: %s  c3: %s  c4: %s",c1,c2,c3,c4);
+          setPWMMotors(int(c1),int(c2),int(c3),int(c4));
         }
       }
     }
@@ -78,6 +99,7 @@ void initWebServer() {
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting...");
+  initMotors();
 #ifdef ESP32
   LittleFS.begin(true);
 #else
