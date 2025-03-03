@@ -70,7 +70,7 @@ void initWebServer() {
     }
   });
   server.rewrite("/config", "/index.html");
-  server.serveStatic("/controller", LittleFS, "/").setDefaultFile("index.html");
+  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
   server.addHandler(&ws);
   server.begin();
 }
