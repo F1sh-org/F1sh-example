@@ -79,22 +79,32 @@ void initWebServer() {
           }
 
           // Extract data
-          const char* action = doc["action"];
-          const char* c1 = doc["c1"];
-          const char* c2 = doc["c2"];
-          const char* c3 = doc["c3"];
-          const char* c4 = doc["c4"];
-          const char* s1 = doc["s1"];
-          const char* s2 = doc["s2"];
-          const char* s3 = doc["s3"];
-          const char* s4 = doc["s4"];
-          const char* s5 = doc["s5"];
-          const char* s6 = doc["s6"];
-
-          Serial.printf("c1: %s  c2: %s  c3: %s  c4: %s\n",c1,c2,c3,c4);
-          Serial.println(action);
-          Serial.printf("s1: %s  s2: %s  s3: %s  s4: %s  s5: %s  s6: %s\n",s1,s2,s3,s4,s5,s6);
-          setPWMMotors(int(c1),int(c2),int(c3),int(c4));
+          if (!doc["action"].isNull()) {
+            const char* action = doc["action"];
+            Serial.println(action);
+            if (doc["action"] == "motor")
+            {
+              const char* c1 = doc["c1"];
+              const char* c2 = doc["c2"];
+              const char* c3 = doc["c3"];
+              const char* c4 = doc["c4"];
+              Serial.printf("c1: %s  c2: %s  c3: %s  c4: %s\n",c1,c2,c3,c4);
+              setPWMMotors(int(c1),int(c2),int(c3),int(c4));
+            }
+            if (doc["action"] == "servo")
+            {
+              const char* s1 = doc["s1"];
+              const char* s2 = doc["s2"];
+              const char* s3 = doc["s3"];
+              const char* s4 = doc["s4"];
+              const char* s5 = doc["s5"];
+              const char* s6 = doc["s6"];
+              Serial.printf("s1: %s  s2: %s  s3: %s  s4: %s  s5: %s  s6: %s\n",s1,s2,s3,s4,s5,s6);
+            }
+            if (doc["action"] == "reboot") {
+              ESP.restart();
+            }
+          }
         }
       }
     }
