@@ -2,6 +2,8 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
+// All credit goes to: https://github.com/makerviet/maker-bot
+
 #define MIN_PWM 0
 #define MAX_PWM 4095
 // PWM channels of pca9685 0-16
