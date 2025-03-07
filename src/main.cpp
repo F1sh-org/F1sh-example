@@ -10,6 +10,9 @@
 #include <WiFi.h>
 #endif
 
+// Remove comment from this line to use ESP Smart Config
+// #define USE_SMART_CONFIG
+
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 #include "AsyncJson.h"
@@ -27,15 +30,33 @@ static AsyncWebServer server(80);
 static AsyncWebSocket ws("/ws");
 
 void initWiFiAP() {
+#ifdef USE_SMART_CONFIG
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.beginSmartConfig();
+  //Wait for SmartConfig packet from mobile
+  Serial.println("Waiting for SmartConfig.");
+  while (!WiFi.smartConfigDone()) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("SmartConfig received.");
+  //Wait for WiFi to connect to AP
+  Serial.println("Waiting for WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("WiFi Connected.");
+#endif
+#ifndef USE_SMART_CONFIG
+  Serial.print("\n\nCreating hotspot");
   WiFi.setHostname(hostname);
   WiFi.encryptionType(WIFI_AUTH_WPA2_PSK);
   WiFi.begin(ssid, password);
-  Serial.print("\n\nCreating hotspot");
   WiFi.mode(WIFI_AP);
   WiFi.softAP(ssid,password,(channel >= 1) && (channel <= 13) ? channel : int(random(1, 13)));
-  Serial.println("\n\nWiFi parameters:");
-  Serial.print("Mode: ");
-  Serial.println(WiFi.getMode() == WIFI_AP ? "Station" : "Client");
+#endif
   Serial.print("IP address: ");
   Serial.println(WiFi.getMode() == WIFI_AP ? WiFi.softAPIP() : WiFi.localIP());
 }
