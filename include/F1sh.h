@@ -1,8 +1,20 @@
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
+#include <AsyncTCP.h>
+#include <WiFi.h>
 #include <LittleFS.h>
 #include "AsyncJson.h"
 #include <ArduinoJson.h>
+
+/*
+  This is the header file for F1sh, a library for controlling a robot using a web interface.
+  The library is designed to work with the ESP32 and ESP8266 microcontrollers, and its all packed in a single header file.
+  Released under the Creative Commons Attribution-NonCommercial 4.0 International License.
+  Created by B4iter (@b4iterdev).
+  Stemist Club logo and all associated assets are property of Stemist Club. All rights reserved.
+  For more infomation on F1sh, please visit: https://github.com/stemistclub/F1sh.git
+*/
+
 
 typedef void (*MotorCallback)(int, int, int, int);
 typedef void (*ServoCallback)(int, int, int, int, int, int);
@@ -69,8 +81,8 @@ void initWebServer() {
   
       } else if (type == WS_EVT_DATA) {
         AwsFrameInfo *info = (AwsFrameInfo *)arg;
-        Serial.printf("index: %" PRIu64 ", len: %" PRIu64 ", final: %" PRIu8 ", opcode: %" PRIu8 "\n", info->index, info->len, info->final, info->opcode);
-        String msg = "";
+        // Serial.printf("index: %" PRIu64 ", len: %" PRIu64 ", final: %" PRIu8 ", opcode: %" PRIu8 "\n", info->index, info->len, info->final, info->opcode);
+        // String msg = "";
         if (info->final && info->index == 0 && info->len == len) {
           if (info->opcode == WS_TEXT) {
             data[len] = 0;
