@@ -19,6 +19,8 @@ This project were made possible using multiple open-source and community-driven 
 
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson.git): MIT license
 
+Also a small part of this quickstart project contains code from [MakerBot](https://github.com/makerviet/maker-bot.git) under MIT license, for more information checkout `motor.h` in `include` directory.
+
 ## License
 This work is licensed under a
 [Creative Commons Attribution-NonCommercial 4.0 International License][cc-by-nc].
