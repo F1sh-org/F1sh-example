@@ -31,7 +31,7 @@ static AsyncWebSocket ws("/ws");
 
 void initWiFiAP() {
 #ifdef USE_SMART_CONFIG
-  WiFi.mode(WIFI_AP_STA);
+  WiFi.mode(WIFI_STA);
   WiFi.beginSmartConfig();
   //Wait for SmartConfig packet from mobile
   Serial.println("Waiting for SmartConfig.");
