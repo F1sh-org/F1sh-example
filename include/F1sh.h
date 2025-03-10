@@ -27,7 +27,6 @@ static MotorCallback motorCallback = nullptr;
 static ServoCallback servoCallback = nullptr;
 
 void initWiFiAP(const char *ssid,const char *password,const char *hostname, int channel) {
-    Serial.print("\n\nCreating hotspot");
     WiFi.setHostname(hostname);
     WiFi.encryptionType(WIFI_AUTH_WPA2_PSK);
     WiFi.begin(ssid, password);
@@ -127,6 +126,10 @@ void initWebServer() {
               }
               if (doc["action"] == "reboot") {
                 ESP.restart();
+              }
+              if (doc["action"] == "get") {
+                // send available data
+                ws.text(client->id(), "{\"action\":\"get\",\"data\":\"ok\"}");
               }
             }
           }
