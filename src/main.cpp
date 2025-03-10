@@ -11,7 +11,7 @@
 
 
 // Remove comment from this line to use ESP Smart Config
-#define USE_SMART_CONFIG
+//#define USE_SMART_CONFIG
 
 
 // If you use Smart Config, you don't need to provide those parameters
