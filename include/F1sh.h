@@ -16,7 +16,7 @@
 */
 
 
-typedef void (*MotorCallback)(int, int, int, int);
+typedef void (*MotorCallback)(int, int, int, int, int, int, int, int);
 typedef void (*ServoCallback)(int, int, int, int, int, int);
 
 
@@ -102,23 +102,26 @@ void initWebServer() {
               Serial.println(action);
               if (doc["action"] == "motor")
               {
-                const int c1 = doc["c1"].as<int>();
-                const int c2 = doc["c2"].as<int>();
-                const int c3 = doc["c3"].as<int>();
-                const int c4 = doc["c4"].as<int>();
-                Serial.printf("c1: %d  c2: %d  c3: %d  c4: %d\n", c1, c2, c3, c4);
+                const int c1 = doc["c1"].is<int>() ? doc["c1"].as<int>() : -1;
+                const int c2 = doc["c2"].is<int>() ? doc["c2"].as<int>() : -1;
+                const int c3 = doc["c3"].is<int>() ? doc["c3"].as<int>() : -1;
+                const int c4 = doc["c4"].is<int>() ? doc["c3"].as<int>() : -1;
+                const int c5 = doc["c5"].is<int>() ? doc["c5"].as<int>() : -1;
+                const int c6 = doc["c6"].is<int>() ? doc["c6"].as<int>() : -1;
+                const int c7 = doc["c7"].is<int>() ? doc["c7"].as<int>() : -1;
+                const int c8 = doc["c8"].is<int>() ? doc["c8"].as<int>() : -1;
                 if (motorCallback) {
-                  motorCallback(c1, c2, c3, c4);
+                  motorCallback(c1, c2, c3, c4, c5, c6, c7, c8);
                 }
               }
               if (doc["action"] == "servo")
               {
-                const int s1 = doc["s1"].as<int>();;
-                const int s2 = doc["s2"].as<int>();;
-                const int s3 = doc["s3"].as<int>();;
-                const int s4 = doc["s4"].as<int>();;
-                const int s5 = doc["s5"].as<int>();;
-                const int s6 = doc["s6"].as<int>();;
+                const int s1 = doc["s1"].is<int>() ? doc["s1"].as<int>() : -1;
+                const int s2 = doc["s2"].is<int>() ? doc["s2"].as<int>() : -1;
+                const int s3 = doc["s3"].is<int>() ? doc["s3"].as<int>() : -1;
+                const int s4 = doc["s4"].is<int>() ? doc["s4"].as<int>() : -1;
+                const int s5 = doc["s5"].is<int>() ? doc["s5"].as<int>() : -1;
+                const int s6 = doc["s6"].is<int>() ? doc["s6"].as<int>() : -1;
                 Serial.printf("s1: %d  s2: %d  s3: %d  s4: %d  s5: %d  s6: %d\n",s1,s2,s3,s4,s5,s6);
                 if (servoCallback) {
                   servoCallback(s1, s2, s3, s4, s5, s6);
@@ -129,7 +132,10 @@ void initWebServer() {
               }
               if (doc["action"] == "get") {
                 // send available data
-                ws.text(client->id(), "{\"action\":\"get\",\"data\":\"ok\"}");
+                JsonDocument res;
+                res["action"] = "get";
+                res["data"] = "ok";
+                ws.text(client->id(), res.as<String>());
               }
             }
           }
