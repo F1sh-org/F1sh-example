@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <F1sh.h>
 
+#define DEBUG
 
 #define TOP_SPEED 4095
 #define NORM_SPEED 2048
