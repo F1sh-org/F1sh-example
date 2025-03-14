@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <F1sh.h>
 #include <motor.h>
+#include <gamepadController.h>
 
 /*
   This is a quickstart example for F1sh, this is a good way to explore F1sh and its capabilities.
@@ -24,6 +25,12 @@ const int channel = 0; // 1-13 - You should change this if there are multiple AP
 
 F1sh f1sh;
 
+void handleGamepad(float axes[][4],float buttons[][17]){
+  axes[0][0] = map(axes[0][0],(float)-1,(float)1,0,255);
+  axes[0][1] = map(axes[0][1],(float)-1,(float)1,0,255);
+  gamepadControl(axes,buttons);
+}
+
 void setup() {
   Serial.begin(115200);
   initMotors();
@@ -33,6 +40,7 @@ void setup() {
   f1sh.F1shInitAP(ssid, password, hostname, channel);
   #endif
   // Register callbacks
+  f1sh.setGamepadCallback(handleGamepad);
 }
 
 void loop() {
