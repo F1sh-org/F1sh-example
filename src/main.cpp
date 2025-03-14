@@ -22,21 +22,7 @@ const char *hostname = "f1sh.local";
 
 const int channel = 0; // 1-13 - You should change this if there are multiple APs in the area.
 
-void handleMotors(int c1, int c2, int c3, int c4, int c5, int c6, int c7, int c8) {
-  // Your motor control code here
-  if (c1 != -1) setPWMMotors(1, c1);
-  if (c2 != -1) setPWMMotors(2, c2);
-  if (c3 != -1) setPWMMotors(3, c3);
-  if (c4 != -1) setPWMMotors(4, c4);
-  if (c5 != -1) setPWMMotors(5, c5);
-  if (c6 != -1) setPWMMotors(6, c6);
-  if (c7 != -1) setPWMMotors(7, c7);
-  if (c8 != -1) setPWMMotors(8, c8);
-}
-
-void handleServos(int s1, int s2, int s3, int s4, int s5, int s6) {
-  // Your servo control code here
-}
+F1sh f1sh;
 
 void setup() {
   Serial.begin(115200);
@@ -44,13 +30,11 @@ void setup() {
   #ifdef USE_SMART_CONFIG
   F1shInitSmartAP();
   #else
-  F1shInitAP(ssid, password, hostname, channel);
+  f1sh.F1shInitAP(ssid, password, hostname, channel);
   #endif
   // Register callbacks
-  setMotorCallback(handleMotors);
-  setServoCallback(handleServos);
 }
 
 void loop() {
-  F1shLoop();
+  f1sh.F1shLoop();
 }
