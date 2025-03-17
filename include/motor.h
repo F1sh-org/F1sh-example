@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-// All credit goes to: https://github.com/makerviet/maker-bot
+// Modified version of: https://github.com/makerviet/maker-bot
 
 #define MIN_PWM 0
 #define MAX_PWM 4095

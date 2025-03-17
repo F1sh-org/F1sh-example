@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <F1sh.h>
 
+// Credit: https://github.com/makerviet/maker-bot
+
 #define DEBUG
 
 #define TOP_SPEED 4095
