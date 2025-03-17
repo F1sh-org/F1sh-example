@@ -5,7 +5,7 @@
 ## Introduction
 This is the quickstart example project for F1sh, a library for controlling a robot using a web interface, packed in a single header file.
 
-The library is designed to work with "BANHTE" - Stemist Club's motor driver board which containes 4 motors and 6 servos powered by an Adafruit's PCA9685 and processed using ESP32 microcontrollers. ESP8266 are not tested and supported. However, we expects it should work properly with ESP8266 with minimal tweaks
+The library is designed to work with F1sh's motor driver board which containes 4 motors and 6 servos powered by an Adafruit's PCA9685 and processed using ESP32 microcontrollers. ESP8266 are not tested and supported. However, we expects it should work properly with ESP8266 with minimal tweaks
 
 ## Credit
 
