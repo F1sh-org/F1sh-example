@@ -17,7 +17,7 @@ bool driving_mode = SINGLE_HAND_DRIVING;
 int speed = NORM_SPEED;
 int c1 = 0, c2 = 0, c3 = 0, c4 = 0;
 
-void gamepadControl(float axes[][4],float buttons[][17]){
+void gamepadControl(float X, float Y, float buttons[][17]){
     if (buttons[0][0] == 1.00){
         speed = TOP_SPEED;
     } else if (buttons[0][1] == 1.00){
@@ -25,8 +25,8 @@ void gamepadControl(float axes[][4],float buttons[][17]){
     } else {
         speed = NORM_SPEED;
     }
-    int nJoyX = 128 - axes[0][0];
-    int nJoyY = 128 - axes[0][1];
+    int nJoyX = 128 - X;
+    int nJoyY = 128 - Y;
     int nMotMixL;                          // Motor (left) mixed output
     int nMotMixR;                          // Motor (right) mixed output
 
