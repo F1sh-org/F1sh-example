@@ -7,7 +7,7 @@
   This is a quickstart example for F1sh, this is a good way to explore F1sh and its capabilities.
   This example is assumes that you are using F1sh's motor driver board which containes 4 motors and 6 servos powered by an Adafruit's PCA9685 controller.
   Released under the Creative Commons Attribution-NonCommercial 4.0 International License.
-  For more infomation on F1sh, please visit: https://github.com/stemistclub/F1sh.git
+  For more infomation on F1sh, please visit: https://github.com/F1sh-org/F1sh.git
 */
 
 
