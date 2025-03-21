@@ -25,16 +25,10 @@ const int channel = 0; // 1-13 - You should change this if there are multiple AP
 
 F1sh f1sh;
 
-void handleGamepad(const float axes[][4], const float buttons[][17]){
-  if (!axes || !buttons) {
-    Serial.println("Invalid gamepad data received");
-    return;
-  }
-  float localButtons[17];
-  memcpy(localButtons, buttons[0], sizeof(float) * 17);
-  float mappedX = map(axes[0][0], (float)-1, (float)1, 0, 255);
-  float mappedY = map(axes[0][1], (float)-1, (float)1, 0, 255);
-  gamepadControl(mappedX, mappedY, &localButtons);
+void handleGamepad() {
+  int X = (int)f1sh.mapFloat(f1sh.gamepad[0].axis[0], -1.0f, 1.0f, 0.0f, 255.0f);
+  int Y = (int)f1sh.mapFloat(f1sh.gamepad[0].axis[1], -1.0f, 1.0f, 0.0f, 255.0f);
+  gamepadControl(X, Y, &f1sh.gamepad[0].button);
 }
 
 void setup() {
