@@ -15,6 +15,13 @@
 // #define USE_SMART_CONFIG
 
 
+// F1sh expects a certificate and a key file to be present in the root of the LittleFS filesystem.
+// Create a cert by yourself by running the following command:
+// openssl req -x509 -newkey rsa:4096 -nodes -keyout server.key -out server.crt -sha256 -days 365
+// After that put both server.crt and server.key in the root of the LittleFS filesystem by putting them under /data folder from this project
+// Then under PlatformIO, go to the Platform and select Upload Filesystem Image to upload the files to the ESP32.
+
+
 // If you use Smart Config, you don't need to provide those parameters
 const char *ssid = "F1sh";
 const char *password = "stemistclub";
@@ -47,5 +54,5 @@ void setup() {
 }
 
 void loop() {
-  f1sh.F1shLoop();
+
 }
