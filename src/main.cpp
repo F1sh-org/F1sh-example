@@ -11,9 +11,6 @@
 */
 
 
-// Remove comment from this line to use ESP Smart Config
-// #define USE_SMART_CONFIG
-
 
 // F1sh expects a certificate and a key file to be present in the root of the LittleFS filesystem.
 // Create a cert by yourself by running the following command:
@@ -41,11 +38,7 @@ void handleGamepad() {
 void setup() {
   Serial.begin(115200);
   initMotors();
-  #ifdef USE_SMART_CONFIG
-  f1sh.F1shInitSmartAP();
-  #else
   f1sh.F1shInitAP(ssid, password, hostname, channel);
-  #endif
   #ifdef CORE_DEBUG_LEVEL
     Serial.setDebugOutput(true);
   #endif
