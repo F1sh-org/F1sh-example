@@ -26,6 +26,7 @@ const char *password = "stemistclub";
 const char *hostname = "f1sh.local";
 
 const int channel = 0; // 1-13 - You should change this if there are multiple APs in the area.
+// ESP32 does not have ability to change channel dynamically based on the environment, so if channel is set to 0 or out of range, F1sh will automatically set to a random channel between 1 and 13
 
 F1sh f1sh;
 
