@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include <F1sh.h>
+
+// This is a modified version of the gamepad controller from the MakerBot project.
 // Credit: https://github.com/makerviet/maker-bot
-#define DEBUG
 #define TOP_SPEED 4095
 #define NORM_SPEED 2048
 #define PRECISE_SPEED 2048
