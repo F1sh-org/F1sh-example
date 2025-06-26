@@ -7,7 +7,7 @@
   This is a tank-drive example for F1sh, this is a good way to explore F1sh and its capabilities.
   This example is assumes that you are using F1sh's motor driver board which containes 4 motors and 6 servos powered by an Adafruit's PCA9685 controller.
   For this tank-drive example, we will use 2 motors for each side of the robot.
-  Released under the Creative Commons Attribution-NonCommercial 4.0 International License.
+  Released under the GNU General Public License version 3.
   For more infomation on F1sh, please visit: https://github.com/F1sh-org/F1sh.git
 */
 
@@ -21,7 +21,7 @@
 
 
 const char *ssid = "F1sh";
-const char *password = "stemistclub";
+const char *password = "f1sh-org";
 
 const char *hostname = "f1sh.local";
 
